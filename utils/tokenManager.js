@@ -26,3 +26,13 @@ export const generateRefreshToken = (uid, res) => {
         console.log(error);
     }
 };
+
+
+export const tokenVerificationErrors = {
+    'invalid signature': 'Incorrect token',
+    'jwt expired': 'Expired token',
+    'invalid token': 'Token does not exist',
+    'No Bearer': 'Use Bearer format',
+    'jwt malformed': 'Token with no valid format',
+    'Token does not exist, use bearer': 'Token does not exist',
+};
