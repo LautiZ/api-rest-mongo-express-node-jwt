@@ -18,11 +18,9 @@ export const getLink = async (req, res) => {
         const { nanolink } = req.params;
         const link = await Link.findOne({ nanoLink: nanolink });
 
-        console.log(link);
-
         if (!link) return res.status(404).json({ error: 'Link does not exist' });
 
-        return res.json({ longLink: link.longLink });
+        return res.redirect(link.longLink);
     } catch (error) {
         console.log(error);
         if (error.kind === 'ObjectId') {
