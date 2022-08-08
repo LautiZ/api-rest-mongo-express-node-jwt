@@ -1,11 +1,19 @@
 import 'dotenv/config';
-import './database/connectdb.js';
+//import './database/connectdb.js';
 import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes.js';
 import linkRouter from './routes/link.routes.js';
 import redirectRouter from './routes/redirect.routes.js';
 import cookieParser from 'cookie-parser';
+import mongoose from "mongoose";
+
+try {
+    await mongoose.connect(process.env.URI_MONGO);
+    console.log('🔮 Connected DB 🔮')
+} catch (e) {
+    console.log(`❌ Error de coneccion: ${e} ❌`)
+}
 
 const app = express();
 
