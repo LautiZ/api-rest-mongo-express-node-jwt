@@ -1,5 +1,5 @@
 import 'dotenv/config';
-//import './database/connectdb.js';
+import './database/connectdb.js';
 import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes.js';
