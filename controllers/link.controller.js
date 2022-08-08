@@ -15,6 +15,25 @@ export const getLinks = async (req, res) => {
 
 export const getLink = async (req, res) => {
     try {
+        const { nanolink } = req.params;
+        const link = await Link.findOne({ nanoLink: nanolink });
+
+        console.log(link);
+
+        if (!link) return res.status(404).json({ error: 'Link does not exist' });
+
+        return res.json({ longLink: link.longLink });
+    } catch (error) {
+        console.log(error);
+        if (error.kind === 'ObjectId') {
+            return res.status(403).json({ error: 'Incorrect id format' });
+        }
+        return res.status(500).json({ error: 'Server error' });
+    }
+}
+
+/* export const getLinkCRUD = async (req, res) => {
+    try {
         const { id } = req.params
         const link = await Link.findById(id);
 
@@ -31,7 +50,7 @@ export const getLink = async (req, res) => {
         }
         return res.status(500).json({ error: 'Server error' });
     }
-};
+}; */
 
 export const createLink = async (req, res) => {
     try {
@@ -70,4 +89,36 @@ export const removeLink = async (req, res) => {
         }
         return res.status(500).json({ error: 'Server error' });
     }
-}
+};
+
+export const updateLink = async (req, res) => {
+    try {
+        const { id } = req.params;
+        let { longLink } = req.body;
+
+        console.log(longLink);
+
+        if (!longLink.startsWith('https://')) {
+            longLink = 'https://' + longLink;
+        }
+
+        const link = await Link.findById(id);
+
+        if (!link) return res.status(404).json({ error: 'Link does not exist' });
+
+        if (!link.uid.equals(req.uid))
+            return res.status(401).json({ error: 'This link does not belong to you' });
+
+        // Actualizar
+        link.longLink = longLink;
+        await link.save();
+
+        return res.json({ link });
+    } catch (error) {
+        console.log(error);
+        if (error.kind === 'ObjectId') {
+            return res.status(403).json({ error: 'Incorrect id format' });
+        }
+        return res.status(500).json({ error: 'Server error' });
+    }
+};
