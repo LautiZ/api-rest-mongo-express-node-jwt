@@ -12,7 +12,7 @@ export const validationResultExpress = (req, res, next) => {
 };
 
 export const paramLinkValidator = [
-    param('id', 'Formato no valido')
+    param('id', 'Incorrect format')
         .trim()
         .notEmpty()
         .escape(),
@@ -21,7 +21,7 @@ export const paramLinkValidator = [
 ]
 
 export const bodyLinkValidator = [
-    body('longLink', 'formato link incorrecto')
+    body('longLink', 'Icorrect link format')
         .trim()
         .notEmpty()
         .custom(async value => {
@@ -35,7 +35,7 @@ export const bodyLinkValidator = [
             } catch (error) {
                 console.log(error);
 
-                throw new Error('Not found lonkLink');
+                throw new Error('Link not found');
             }
         }),
     validationResultExpress
